@@ -8,6 +8,7 @@ var gulp = require('gulp'),
 
 var coffeeSources = ['components/coffee/tagline.coffee'];
 var htmlSources = ['builds/development/*.html'];
+var jsonSources = ['builds/development/js/*.json'];
 var jsSources = [
     'components/scripts/rclick.js',
     'components/scripts/pixgrid.js',
@@ -26,6 +27,11 @@ gulp.task('coffee', function() {
 
 gulp.task('html', function() {
     gulp.src(htmlSources)
+        .pipe(connect.reload());
+});
+
+gulp.task('json', function() {
+    gulp.src(jsonSources)
         .pipe(connect.reload());
 });
 
@@ -59,8 +65,9 @@ gulp.task('connect', function() {
 gulp.task('watch', function() {
     gulp.watch(coffeeSources, ['coffee']);
     gulp.watch(htmlSources, ['html']);
+    gulp.watch(jsonSources, ['json']);
     gulp.watch(jsSources, ['js']);
     gulp.watch('components/sass/*.scss', ['compass']);
 });
 
-gulp.task('default', ['coffee', 'html', 'js', 'compass', 'connect', 'watch']);
+gulp.task('default', ['coffee', 'html', 'json', 'js', 'compass', 'connect', 'watch']);
