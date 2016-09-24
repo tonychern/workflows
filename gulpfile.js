@@ -19,7 +19,7 @@ gulp.task('coffee', function() {
     gulp.src(coffeeSources)
         .pipe(coffee({ bare: true })
               .on('error', gutil.log))
-        .pipe(gulp.dest('components/script'))
+        .pipe(gulp.dest('components/scripts'))
 });
 
 gulp.task('js', function() {
@@ -40,4 +40,8 @@ gulp.task('compass', function() {
         .pipe(gulp.dest('builds/development/css'))
 });
 
+gulp.task('watch', function() {
+    gulp.watch(coffeeSources, ['coffee']);
+    gulp.watch(jsSources, ['js']);
+});
 gulp.task('default',['coffee','js','compass']);
