@@ -4,7 +4,9 @@ var gulp = require('gulp'),
     browserify = require('gulp-browserify'),
     compass = require('gulp-compass'),
     connect = require('gulp-connect'),
-    concat = require('gulp-concat');
+    concat = require('gulp-concat'),
+    gulpif = require('gulp-if'),
+    uglify = require('gulp-uglify');
 
 var env,
     coffeeSources,
@@ -59,6 +61,7 @@ gulp.task('js', function() {
     gulp.src(jsSources)
         .pipe(concat('script.js'))
         .pipe(browserify())
+        .pipe(gulpif(env == 'production', uglify()))
         .pipe(gulp.dest(outputDir + 'js'))
         .pipe(connect.reload())
 });
@@ -72,7 +75,7 @@ gulp.task('compass', function() {
             style: sassStyle
         }))
         .on('error', gutil.log)
-        .pipe(gulp.dest(outputDir + 'builds/production/css'))
+        .pipe(gulp.dest(outputDir + 'css'))
         .pipe(connect.reload())
 });
 
