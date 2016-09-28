@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     connect = require('gulp-connect'),
     concat = require('gulp-concat'),
     gulpif = require('gulp-if'),
+    jsonminify = require('gulp-jsonminify'),
     minifyhtml = require('gulp-minify-html'),
     uglify = require('gulp-uglify');
 
@@ -56,7 +57,9 @@ gulp.task('html', function() {
 });
 
 gulp.task('json', function() {
-    gulp.src(jsonSources)
+    gulp.src('builds/development/js/*.json')
+        .pipe(gulpif(env == 'production', jsonminify()))
+        .pipe(gulpif(env == 'production', gulp.dest('builds/production/js')))
         .pipe(connect.reload());
 });
 
@@ -91,9 +94,9 @@ gulp.task('connect', function() {
 
 gulp.task('watch', function() {
     gulp.watch(coffeeSources, ['coffee']);
-    gulp.watch('builds/development/*.html', ['html']);
-    gulp.watch(jsonSources, ['json']);
     gulp.watch(jsSources, ['js']);
+    gulp.watch('builds/development/*.html', ['html']);
+    gulp.watch('builds/development/*.json', ['json']);
     gulp.watch('components/sass/*.scss', ['compass']);
 });
 
